@@ -1,0 +1,23 @@
+.slide-wrapper{
+    display:flex;
+    justify-content: flex-start;
+    align-items: center;
+    height:fit-content;
+    overflow: hidden;
+    padding:1rem;
+    gap:10%;
+    max-width:1040px;
+    margin-left: auto;
+    margin-right: auto;
+}
+.story{
+    width:60px;
+    border-radius: 50%;
+}
+.posts-cont{
+    width:100%;
+    display: grid;
+    grid-template-columns: 1fr;
+    justify-items: center;
+    margin-top: 50px;
+}
