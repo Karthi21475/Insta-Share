@@ -6,7 +6,7 @@ export default defineConfig({
   plugins: [react()],server:{
     proxy:{
       '/api':{
-        target:'https://apis.ccbp.in/insta-share',
+        target:'https://apis.ccbp.in/login',
         changeOrigin:true,
         rewrite:path=>path.replace(/^\/api/,''),
       }

@@ -20,23 +20,25 @@ function Login() {
                   const username = e.target.username.value;
                   const password =e.target.password.value;
                   const formData = {username,password};
-                  const res=await axios.post('https://apis.ccbp.in/login',formData,{
-                    headers:{
-                      'Content-Type':'application/json'
-                    },
-                    withCredentials: true
-                  })
-                  if (res.data.message==="Login Success"){
-                    console.log(res.message);
-                    window.location.href="/";
-                  }else if(res.data.message==="Incorrect Password"){
-                    setError(true);
-                  }
-                  else if(res.data.message==="user does not exist"){
-                    window.location.href="/signup";
-                  }
-                  else{
-                    alert(res.data.message);
+                  try{
+                    const res=await axios.post("/api",formData,{
+                      headers:{
+                        'Content-Type':'application/json'
+                      },
+                      withCredentials: true
+                    })
+                    console.log(res.data.jwt_token);
+                    if (res.data.jwt_token){
+                      document.cookie = `token=${res.data.jwt_token}; path=/; max-age=604800`;
+                      window.location.href="/";
+                    }
+                  }catch(err){
+                    if(err.response.data.error_msg==="invalid username"){
+                      window.location.href="/signup";
+                    }
+                    else if(err.response.data.error_msg==="username and password didn't match"){
+                      setError(true);
+                    }
                   }
                   setLoader(false)
               }}>

@@ -10,6 +10,7 @@
     top:0;
     left:0;
     right:0;
+    z-index: 1000;
 }
 .nav-btn{
     padding:0.5rem;
@@ -91,7 +92,7 @@ li:nth-child(2) a{
     display: none;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 820px) {
     .search-container {
         display: none;
     }
@@ -102,19 +103,12 @@ li:nth-child(2) a{
         color:#4094EF;
         display: block;
     }
-    .search-container{
-        border-radius: 50%;
-        width:30px;
-        height:30px;
-        justify-content: center;
-        align-items: center;
-    }
     .logo-container h1{
         font-size:clamp(1.5rem,calc(3vh),3rem);
         text-wrap: nowrap;
     }
     .nav-links{
-        font-size:clamp(1rem,calc(3vh),2rem);
+        font-size:clamp(1rem,2vh,2rem);
     }
 }
 @media (max-width: 560px) {
