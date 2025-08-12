@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import Cookies from 'js-cookie';
-import axios from 'axios';
 import '../styles/Nav.css';
 import logo from '../assets/logo.png';
 function Nav(Details) {
@@ -9,9 +8,7 @@ function Nav(Details) {
     const [showMenu, setShowMenu] = useState(false);
     useEffect(()=>{
         const authchecker=async()=>{
-            const res=await axios.get(`${import.meta.env.VITE_API_URL}`+'/api/user/auth',{headers:{'Content-Type':'application/json'},withCredentials: true})
-            
-            if(res.data.message==="User Authenticated"){
+            if(Cookies.get('token')){
                 settoken(true);
             }
             else{
@@ -23,10 +20,8 @@ function Nav(Details) {
         authchecker();
     },[token]);
     const handleClick=async()=>{
-        const res=await axios.post(`${import.meta.env.VITE_API_URL}`+`/api/user/logout`,{},{withCredentials: true});
-        if (res.data.message==="User Logged Out"){
-            settoken(false);
-        }
+        Cookies.remove('token')
+        settoken(false);
     }
 
     return (
