@@ -2,18 +2,19 @@ import '../styles/postitem.css'
 import {Link} from 'react-router-dom'; 
 function PostItem({postDetails}) {
 
-    const {user_name,profile_pic,post_details,likes_count,created_at}=postDetails;
+    const {username,profilepic,post}=postDetails;
+    // console.log(postDetails)
 
 
     return (
     <>
         <div className="postitem-cont">
             <div className='post-pic-cont'>
-                <img className='post-prof-pic' src={profile_pic}/>
-                <p>{user_name}</p>
+                <img className='post-prof-pic' src={profilepic}/>
+                <p>{username}</p>
             </div>
                 <div className='post-img-cont'>
-                    <img src={post_details.image_url} />
+                    <img src={post.image} />
                 </div>
             <div className="post-info-wrapper">
                 <div className='like-cont'>
@@ -32,9 +33,9 @@ function PostItem({postDetails}) {
                         </g>
                     </svg>
                 </div>
-                {likes_count} likes
-                <p>{post_details.caption}</p>
-                <span style={{opacity:'0.5'}}>{created_at}</span>
+                {post.likes_count} likes
+                <p>{post.post_disc}</p>
+                {/* <span style={{opacity:'0.5'}}>{created_at}</span> */}
             </div>
         </div>
     </>

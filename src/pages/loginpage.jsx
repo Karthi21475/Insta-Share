@@ -5,7 +5,10 @@ import '../styles/login.css';
 import logo from '../assets/logo.png';
 import ClipLoader from 'react-spinners/ClipLoader';
 import loginImage from '../assets/login.png';
+import Cookie from 'js-cookie'
+import { useNavigate } from "react-router";
 function Login() {
+  const navigate=useNavigate();
   const [show,setshow]=useState(false);
   const [loader,setLoader]=useState(false);
   const [error,setError]=useState(false);
@@ -21,28 +24,32 @@ function Login() {
                   const password =e.target.password.value;
                   const formData = {username,password};
                   try{
-                    const res=await axios.post("/api",formData,{
+                    const res=await axios.post('http://localhost:3000/api/user/login',formData,{
                       headers:{
                         'Content-Type':'application/json'
                       },
                       withCredentials: true
                     })
-                    if (res.data.jwt_token){
-                      document.cookie = `token=${res.data.jwt_token}; path=/; max-age=604800`;
-                      window.location.href="/";
+                    if (res.data.message==="Login Success"){
+                      Cookie.set(
+                        'token',
+                        res.data.jwt_token,
+                        {path:'/', 
+                        expires:7});
+                      navigate("/");
                     }
                   }catch(err){
-                    if(err.response.data.error_msg==="invalid username"){
-                      window.location.href="/signup";
+                    if(err.response.data.message==="user does not exist"){
+                      navigate("/signup");
                     }
-                    else if(err.response.data.error_msg==="username and password didn't match"){
+                    else if(err.response.data.message==="Incorrect Password"){
                       setError(true);
                     }
                   }
                   setLoader(false)
               }}>
                 <div className="logo-cont">
-                  <img src={logo} alt="Logo" onClick={() => window.location.href="/"}/>
+                  <img src={logo} alt="Logo" onClick={() => navigate("/")}/>
                   <h1>Insta Share</h1>
                 </div>
                   <label htmlFor="username" >Username</label>

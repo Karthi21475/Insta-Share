@@ -6,22 +6,26 @@ import '../styles/profilepage.css'
 import Nav from '../components/Nav';
 import ClipLoader from 'react-spinners/ClipLoader';
 import Cookies from 'js-cookie';
+import plus from '../assets/plus.png'
+import { useNavigate } from "react-router";
 function ProfilePage() {
-
+    const navigate=useNavigate();
     const [profile,setProfile]=useState([]);
     const [loader,setLoader]=useState(false);
     useEffect(()=>{
         const getprofile=async()=>{
             setLoader(true)
-            const res=await axios.get('https://apis.ccbp.in/insta-share/my-profile',{headers:{
-                Authorization:`Bearer ${Cookies.get('token')}`
-            }});
-            setProfile(res.data.profile);
+            const res=await axios.get('http://localhost:3000/api/user/',{
+            headers:{
+                'Content-Type':'application/json'
+            },
+            withCredentials: true
+            });
+            setProfile(res.data.user);
             setLoader(false)
         }
         getprofile();
     },[]);
-
     return (
         <>
             <Nav profile={true} home={false} showSearch={false}/>
@@ -47,7 +51,7 @@ function ProfilePage() {
                         </div>
                     </div>
                     <div className="prof-info">
-                        <p>{profile.user_id}</p>
+                        <p>{profile.user_name}</p>
                         <p>{profile.user_bio}</p>
                     </div>
                 </div>
@@ -56,18 +60,35 @@ function ProfilePage() {
                 {loader ? <ClipLoader/>:
                 !profile.stories? ""
                 :profile.stories.map(item=>
-                    <img key={item.id} className="story" src={item.image} />
+                    <div className='storie-cont' key={item.id}>
+                        <div className="story" >
+                            <img src={item.image} />
+                        </div>
+                    </div>
+                    
                 )}
+                <div className='storie-cont' onClick={()=>{navigate('/upload-story')}}>
+                    <div className="story" >
+                        <img src={plus} />
+                    </div>
+                </div>
             </div>
             <div className="posts-container">
                 <h1>#Posts</h1>
             </div>
             <div className="posts-container">
+                {console.log(profile)}
                 {loader ? <ClipLoader/>:
                 !profile.posts?"No Post Yet":
                 profile.posts.map(item=>
                     <img className="post" key={item.id} src={item.image} />
-                )}
+                )
+                }
+                <div className='postt-cont' onClick={()=>{navigate(`/uploadPost/${profile.user_id}`)}}>
+                    <div className="ad-post" >
+                        <img src={plus} />
+                    </div>
+                </div>
             </div>
         </>
     )

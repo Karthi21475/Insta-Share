@@ -3,25 +3,22 @@ import { Link } from 'react-router-dom';
 import Cookies from 'js-cookie';
 import '../styles/Nav.css';
 import logo from '../assets/logo.png';
+import { useNavigate } from "react-router";
 function Nav(Details) {
-    const [token,settoken]=useState(false);
+    const navigate=useNavigate();
     const [showMenu, setShowMenu] = useState(false);
     useEffect(()=>{
         const authchecker=async()=>{
-            if(Cookies.get('token')){
-                settoken(true);
-            }
-            else{
-                window.location.href='/login';
+            if(!Cookies.get('token')){
+                navigate('/login');
                 Cookies.remove('token');
-                settoken(false);
             }
         }
         authchecker();
-    },[token]);
+    },[navigate]);
     const handleClick=async()=>{
+        navigate('/login');
         Cookies.remove('token')
-        settoken(false);
     }
 
     return (

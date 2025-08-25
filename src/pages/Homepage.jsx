@@ -53,20 +53,15 @@ function Homepage() {
   useEffect(()=>{
     const getstories=async()=>{
         setStoryLoader(true);
-        const res=await axios.get('https://apis.ccbp.in/insta-share/stories',{
-          headers:{
-            Authorization:`Bearer ${Cookies.get('token')}`
-          }});
-        setStories(res.data.users_stories);
+        const res=await axios.get('http://localhost:3000/api/story');
+        setStories(res.data.all);
         setStoryLoader(false);
     }
     getstories();
     const getposts=async()=>{
       setPostLoader(true);
-      const res=await axios.get('https://apis.ccbp.in/insta-share/posts',{headers:{
-            Authorization:`Bearer ${Cookies.get('token')}`
-          }});
-      setPosts(res.data.posts);
+      const res=await axios.get('http://localhost:3000/api/post');
+      setPosts(res.data.all);
       setPostLoader(false);
     }
     getposts();
@@ -96,7 +91,7 @@ function Homepage() {
                 <ClipLoader className='Loader'/>
               </div>
                 :searchResults.map(item=>{
-                  return <PostItem postDetails={item} key={item.post_id}/>
+                  return <PostItem postDetails={item} key={item.posts.post_id}/>
               })}
           </div>
           :
@@ -106,11 +101,11 @@ function Homepage() {
                   <ClipLoader className='Loader'/>
                 :
                 <Slider {...settings}>{
-                  stories.map(item=>{
+                  stories.length>0 && stories.map(item=>{
                     return (
-                      <div className="story-cont"  key={item.id}>
-                        <img className="story" src={item.story_url} />
-                        {item.user_name}
+                      item.story && <div className="story-cont"  key={item.user_id}>
+                        <img className="story" src={item.story.image} />
+                        {item.username}
                       </div>
                     )}
                   )}
@@ -122,8 +117,8 @@ function Homepage() {
                 <div className='Loader-cont'>
                   <ClipLoader className='Loader'/>
                 </div>
-                :posts.map(item=>{
-                  return <PostItem postDetails={item} key={item.post_id}/>
+                :posts.length>0 && posts.map(item=>{
+                  return item.post && <PostItem postDetails={item} key={item.post.post_id}/>
                 })}
             </div>
           </>
