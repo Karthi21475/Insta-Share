@@ -7,7 +7,8 @@ import loginImage from '../assets/login.png';
 import { useNavigate } from "react-router";
 function Signin() {
   const navigate=useNavigate();
-  const [show,setshow]=useState(false);
+  const [show,setShow]=useState(false);
+  const [error,setError]=useState("");
   return (
     <>
       <div className="form-container">
@@ -16,22 +17,21 @@ function Signin() {
           async(e)=>{
           e.preventDefault();
           const username = e.target.username.value;
+          const email = e.target.email.value;
           const password =e.target.password.value;
-          // if (password.length>15 || password.length<6){
-          //   return alert("password must consist of 6 to 15 characters only");
-          // }
-          const formData = {username,password};
-          const res=await axios.post('http://localhost:3000/api/user/signup',formData,{
-            headers:{
-              'Content-Type':'application/json'
-            },
-            withCredentials: true
-          });
-          console.log(res);
-          if(res.data.message==="User Created"){
-            navigate('/login');
-          }else{
-            alert(res.data.message);
+          const formData = {username,email,password};
+          try{
+            const res=await axios.post('http://localhost:3000/api/user/signup',formData,{
+              headers:{
+                'Content-Type':'application/json'
+              },
+              withCredentials: true
+            });
+            if(res.data.message==="User Created"){
+              navigate('/login');
+            }
+          }catch(err){
+              setError(err.response.data.message);
           }
         }}>
           <div className='logo-cont'>
@@ -48,8 +48,9 @@ function Signin() {
           <label htmlFor='password'>Password</label>
           <div className="input-cont">
             <input type={show ? "text":"password"} name="password" id="password" placeholder="Password" required/>
-            <p onClick={()=>{setshow(!show)}} htmlFor='password' >{!show?'Show':"Hide"}</p>
+            <p onClick={()=>{setShow(!show)}} htmlFor='password' >{!show?'Show':"Hide"}</p>
           </div>
+          {error.length>0 && <p className="error">{error}</p>}
           <button type='submit' className="btn">Sign Up</button>
           <p>Already have an account?<Link to="/login" className="navigateLink">Log in</Link></p>
         </form>

@@ -5,6 +5,7 @@ import Homepage from './pages/Homepage.jsx'
 import ProfilePage from './pages/ProfilePage.jsx';
 import SearchPage from "./pages/searchPage.jsx";
 import AddPostPage from './pages/AddPostPage.jsx'
+import AddStoryPage from './pages/AddStoryPage.jsx'
 function App() {
 
   return (
@@ -12,9 +13,10 @@ function App() {
       <Route path='/' element={<Homepage/>}></Route>
       <Route path='/login' element={<Login/>}></Route>
       <Route path='/signup' element={<Signup/>}></Route>
-      <Route path='/profile' element={<ProfilePage/>}></Route>
+      <Route path='/profile/:user_name' element={<ProfilePage/>}></Route>
       <Route path='/search' element={<SearchPage/>}></Route>
       <Route path='/uploadPost/:user_id' element={<AddPostPage/>}></Route>
+      <Route path='/uploadStory/:user_id' element={<AddStoryPage/>}></Route>
       <Route path='*' element={<h1>Not Found</h1>}></Route>
     </Routes>
   );

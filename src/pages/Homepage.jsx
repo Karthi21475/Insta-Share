@@ -12,11 +12,9 @@ function Homepage() {
 
   const [storyLoader,setStoryLoader]=useState(false);
   const [postLoader,setPostLoader]=useState(false);
-  const [resultLoader,setResultLoader]=useState(false);
   const [stories,setStories]=useState([]);
   const [posts,setPosts]=useState([]);
-  const [searchTerm,setSearchTerm]=useState("");
-  const [searchResults,setSearchResults]=useState([]);
+  
 
   const settings = {
   dots: false,
@@ -50,79 +48,53 @@ function Homepage() {
   ]
 };
 
-  useEffect(()=>{
+  useEffect(()=>{      
+
     const getstories=async()=>{
         setStoryLoader(true);
-        const res=await axios.get('http://localhost:3000/api/story');
-        setStories(res.data.all);
+        const res=await axios.get(`${import.meta.env.VITE_API_URL}/api/story`);
+        setStories(res.data.stories);
         setStoryLoader(false);
     }
     getstories();
     const getposts=async()=>{
       setPostLoader(true);
-      const res=await axios.get('http://localhost:3000/api/post');
-      setPosts(res.data.all);
+      const res=await axios.get(`${import.meta.env.VITE_API_URL}/api/post`);
+      setPosts(res.data.posts);
       setPostLoader(false);
     }
     getposts();
   },[])
-  useEffect(()=>{
-    if(searchTerm.length>0){
-    const getResults=async()=>{
-      setResultLoader(true);
-      const res=await axios.get(`https://apis.ccbp.in/insta-share/posts?search=${searchTerm}`,{headers:{
-        Authorization:`Bearer ${Cookies.get('token')}`
-      }})
-      setSearchResults(res.data.posts);
-      setResultLoader(false);
-    }
-    getResults();
-  }
-  },[searchTerm])
   return (
     <>
-        <Nav home={true} profile={false} showSearch={true} searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
-        {
-          searchTerm.length>0 ?
-          <div className='posts-cont'>
-              <h2>Search Results</h2>
-              {resultLoader?
-              <div className='Loader-cont'>
-                <ClipLoader className='Loader'/>
-              </div>
-                :searchResults.map(item=>{
-                  return <PostItem postDetails={item} key={item.posts.post_id}/>
-              })}
-          </div>
-          :
-          <>
-            <div className='slide-wrapper'>
-                {storyLoader?
-                  <ClipLoader className='Loader'/>
-                :
-                <Slider {...settings}>{
-                  stories.length>0 && stories.map(item=>{
-                    return (
-                      item.story && <div className="story-cont"  key={item.user_id}>
-                        <img className="story" src={item.story.image} />
-                        {item.username}
-                      </div>
-                    )}
-                  )}
-                </Slider>
-              }
+        <Nav home={true} profile={false} showSearch={true}/>
+        <div className='slide-wrapper'>
+            {storyLoader?
+              <ClipLoader className='Loader'/>
+            :
+            <Slider {...settings}>{
+              stories && stories.map(item=>{
+                return (
+                  <div className="story-cont"  key={item.user_id}>
+                    <div className='story'>
+                      <video src={item.video} />
+                    </div>
+                    {item.user_name}
+                  </div>
+                )}
+              )}
+            </Slider>
+          }
+        </div>
+        <div className="posts-cont">
+            {postLoader?
+            <div className='Loader-cont'>
+              <ClipLoader className='Loader'/>
             </div>
-            <div className="posts-cont">
-                {postLoader?
-                <div className='Loader-cont'>
-                  <ClipLoader className='Loader'/>
-                </div>
-                :posts.length>0 && posts.map(item=>{
-                  return item.post && <PostItem postDetails={item} key={item.post.post_id}/>
-                })}
-            </div>
-          </>
-        }
+            :posts && posts.map(item=>{
+              return <PostItem postDetails={item} key={item.post_id}/>
+            })}
+        </div>
     </>
   )
 }
