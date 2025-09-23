@@ -7,6 +7,7 @@ import ClipLoader from 'react-spinners/ClipLoader';
 import loginImage from '../assets/login.png';
 import Cookie from 'js-cookie'
 import { useNavigate } from "react-router";
+import { toast } from 'react-toastify';
 function Login() {
   const navigate=useNavigate();
   const [show,setshow]=useState(false);
@@ -32,20 +33,13 @@ function Login() {
                       withCredentials: true
                     })
                     if (res.data.message==="Login Success"){
-                      Cookie.set(
-                        'token',
-                        res.data.jwt_token,
-                        {path:'/', 
-                          expires:7});
                           navigate("/");
                         }
-                  }catch(err){
-                    if(err.response.data.message==="user does not exist"){
-                      navigate("/signup");
-                    }
-                    else{
-                      setError(err.response.data.message);
-                    }
+                      }catch(err){
+                        if(err.response.data.message==="user does not exist"){
+                          navigate("/signup");
+                        }
+                        toast.error(err.response.data.message);
                   }
                   setLoader(false)
               }}>

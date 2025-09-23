@@ -4,6 +4,7 @@ import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router";
 import '../styles/AddPage.css'
 import { ClipLoader } from "react-spinners";
+import { toast } from "react-toastify";
 function UploadPost() {
     const navigate=useNavigate();
     const {user_id}=useParams();
@@ -17,6 +18,7 @@ function UploadPost() {
     setLoader(true);
     if (!file) {
         setLoader(false);
+        toast.error("Upload a file to Post")
         return setError("Upload a file to Post")
     };
 
@@ -25,9 +27,9 @@ function UploadPost() {
     formData.append("post_disc", caption);
     formData.append("user_id", user_id);
 
-    const res=await axios.post(`${import.meta.env.VITE_API_URL}/api/post`,formData,{withCredentials: true});
+    await axios.post(`${import.meta.env.VITE_API_URL}/api/post`,formData,{withCredentials: true});
     setLoader(false)
-    console.log("Saved post:", res);
+    toast.success("Posted successfully")
     navigate('/profile')
     };
 

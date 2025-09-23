@@ -5,6 +5,7 @@ import '../styles/Nav.css';
 import logo from '../assets/logo.png';
 import { useNavigate } from "react-router";
 import axios from 'axios';
+import {toast} from 'react-toastify'
 function Nav(Details) {
     const navigate=useNavigate();
     const [showMenu, setShowMenu] = useState(false);
@@ -16,14 +17,16 @@ function Nav(Details) {
                 setUserName(res.data.user_name)
             }else{
                 navigate('/login');
-                Cookies.remove('token');
             }
         }
         authentication();
     },[navigate]);
     const handleClick=async()=>{
-        navigate('/login');
-        Cookies.remove('token')
+        const res=await axios.post(`${import.meta.env.VITE_API_URL}/api/user/logout`,{},{withCredentials:true});
+        if(res.data.message=="User Logged Out"){
+            toast.success("Logged Out Successfully")
+            navigate('/login');
+        }
     }
 
     return (
