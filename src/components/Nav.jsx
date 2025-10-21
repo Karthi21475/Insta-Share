@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import Cookies from 'js-cookie';
 import '../styles/Nav.css';
 import logo from '../assets/logo.png';
 import { useNavigate } from "react-router";
@@ -43,7 +42,7 @@ function Nav(Details) {
                     <li className={Details.profile ? `color`:''}><Link to={`/profile/${user_name}`}>Profile</Link></li>
                 </ul>
                 <div className="util-cont">
-                    <button className="btn nav-btn" onClick={()=>handleClick()}>Logout</button>
+                    <button className="btn nav-btn" onClick={()=>handleClick()}>{user_name.length()==0?"Login":"Logout"}</button>
                 </div>
             </div>
             <div className='hamburger-icon' onClick={() => setShowMenu(!showMenu)}>

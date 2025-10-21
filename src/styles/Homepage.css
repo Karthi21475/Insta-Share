@@ -39,6 +39,7 @@
     margin-bottom: 30px;
 }
 .Loader{
+    border-color: white white transparent !important;
     position: absolute;
     left:50%;
     top:50%;

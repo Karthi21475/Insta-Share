@@ -7,15 +7,12 @@ import ClipLoader from 'react-spinners/ClipLoader';
 import Slider from 'react-slick';
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import Cookies from 'js-cookie';
-import { useNavigate } from 'react-router-dom';
 function Homepage() {
 
   const [storyLoader,setStoryLoader]=useState(false);
   const [postLoader,setPostLoader]=useState(false);
   const [stories,setStories]=useState([]);
   const [posts,setPosts]=useState([]);
-  const navigate=useNavigate();
   
 
   const settings = {
@@ -66,10 +63,6 @@ function Homepage() {
       setPostLoader(false);
     }
     getposts();
-    // if(!Cookies.get('token')){
-    //   navigate('/login')
-    // }
-    console.log(Cookies.get('token'));
   },[])
   return (
     <>
