@@ -42,7 +42,7 @@ function Nav(Details) {
                     <li className={Details.profile ? `color`:''}><Link to={`/profile/${user_name}`}>Profile</Link></li>
                 </ul>
                 <div className="util-cont">
-                    <button className="btn nav-btn" onClick={()=>handleClick()}>{user_name.length()==0?"Login":"Logout"}</button>
+                    <button className="btn nav-btn" onClick={()=>handleClick()}>{!user_name?"Login":"Logout"}</button>
                 </div>
             </div>
             <div className='hamburger-icon' onClick={() => setShowMenu(!showMenu)}>
