@@ -5,7 +5,6 @@ import '../styles/login.css';
 import logo from '../assets/logo.png';
 import ClipLoader from 'react-spinners/ClipLoader';
 import loginImage from '../assets/login.png';
-import Cookie from 'js-cookie'
 import { useNavigate } from "react-router";
 import { toast } from 'react-toastify';
 function Login() {

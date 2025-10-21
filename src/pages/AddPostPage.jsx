@@ -30,7 +30,7 @@ function UploadPost() {
     await axios.post(`${import.meta.env.VITE_API_URL}/api/post`,formData,{withCredentials: true});
     setLoader(false)
     toast.success("Posted successfully")
-    navigate('/profile')
+    navigate('/')
     };
 
     const handleChange = async(e)=>{

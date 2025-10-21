@@ -25,7 +25,7 @@ function UploadStory() {
     const res=await axios.post("http://localhost:3000/api/story",formData,{withCredentials: true});
     setLoader(false);
     console.log("Saved story:", res);
-    navigate('/profile')
+    navigate('/')
     };
 
     const handleChange = async(e)=>{

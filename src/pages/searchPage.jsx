@@ -14,7 +14,7 @@ function SearchPage() {
     const getResults=async()=>{
             if(searchTerm.length>0){
                 setResultLoader(true);
-                const res=await axios.get(`http://localhost:3000/api/search`,{params:{searchTerm:searchTerm},withCredentials:true}
+                const res=await axios.get(`${import.meta.env.VITE_API_URL}/api/search`,{params:{searchTerm:searchTerm},withCredentials:true}
                 )
                 setSearchResults(res.data);
                 setResultLoader(false);

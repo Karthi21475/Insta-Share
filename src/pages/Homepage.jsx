@@ -8,12 +8,14 @@ import Slider from 'react-slick';
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import Cookies from 'js-cookie';
+import { useNavigate } from 'react-router-dom';
 function Homepage() {
 
   const [storyLoader,setStoryLoader]=useState(false);
   const [postLoader,setPostLoader]=useState(false);
   const [stories,setStories]=useState([]);
   const [posts,setPosts]=useState([]);
+  const navigate=useNavigate();
   
 
   const settings = {
@@ -64,6 +66,9 @@ function Homepage() {
       setPostLoader(false);
     }
     getposts();
+    if(!Cookies.get('token')){
+      navigate('/login')
+    }
   },[])
   return (
     <>
@@ -74,10 +79,11 @@ function Homepage() {
             :
             <Slider {...settings}>{
               stories && stories.map(item=>{
+                {console.log(item)}
                 return (
                   <div className="story-cont"  key={item.user_id}>
                     <div className='story'>
-                      <video src={item.video} />
+                      <img src={item.profile_pic} />
                     </div>
                     {item.user_name}
                   </div>
