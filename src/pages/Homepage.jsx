@@ -66,9 +66,10 @@ function Homepage() {
       setPostLoader(false);
     }
     getposts();
-    if(!Cookies.get('token')){
-      navigate('/login')
-    }
+    // if(!Cookies.get('token')){
+    //   navigate('/login')
+    // }
+    console.log(Cookies.get('token'));
   },[])
   return (
     <>
